@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("books")]
-public class BookController : ControllerBase
+public class BookController : BaseApiController
 {
     private readonly IGenericRepository<Book> _bookRepository;
     private readonly IMapper _mapper;
