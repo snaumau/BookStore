@@ -1,30 +1,27 @@
+using API.Extensions;
 using API.Helpers;
-using Core.Interfaces;
+using API.Middleware;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo {Title = "API Documentation", Version = "v1"}));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlite(connectionString));
 
-builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
+
+builder.Services.AddApplicationServices();
+builder.Services.AddSwaggerDocumentation();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore.API");
-});
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseSwaggerDocumentation();
 
 var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
 using (var scope = app.Services.CreateScope())
@@ -42,6 +39,8 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occured during migration");
     }
 }
+
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
