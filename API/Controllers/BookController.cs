@@ -1,4 +1,5 @@
 using API.DTO;
+using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +11,17 @@ namespace API.Controllers;
 public class BookController : ControllerBase
 {
     private readonly IGenericRepository<Book> _bookRepository;
+    private readonly IMapper _mapper;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="bookRepository"></param>
-    public BookController(IGenericRepository<Book> bookRepository)
+    /// <param name="mapper"></param>
+    public BookController(IGenericRepository<Book> bookRepository, IMapper mapper)
     {
         _bookRepository = bookRepository;
+        _mapper = mapper;
     }
     
     /// <summary>
@@ -32,13 +36,7 @@ public class BookController : ControllerBase
         if (book is null)
             return BadRequest("Book didn't find");
 
-        return new BookDto
-        {
-            Id = book.Id,
-            Name = book.Name,
-            Price = book.Price,
-            ReleaseDate = book.ReleaseDate
-        };
+        return _mapper.Map<BookDto>(book);
     }
     
     /// <summary>
@@ -46,20 +44,14 @@ public class BookController : ControllerBase
     /// </summary>
     /// <returns>List of the books</returns>
     [HttpGet]
-    public async Task<ActionResult<List<BookDto>>> GetBooks()
+    public async Task<ActionResult<IReadOnlyList<BookDto>>> GetBooks()
     {
         var books = await _bookRepository.ListAllAsync();
         if (!books.Any())
             return BadRequest("Books don't exist");
 
-        var data = books.Select(book => new BookDto
-        {
-            Id = book.Id,
-            Name = book.Name,
-            Price = book.Price,
-            ReleaseDate = book.ReleaseDate
-        }).ToList();
+        var data = _mapper.Map<IReadOnlyList<BookDto>>(books);
 
-        return data;
+        return Ok(data);
     }
 }
