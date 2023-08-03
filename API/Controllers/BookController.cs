@@ -1,4 +1,5 @@
 using API.DTO;
+using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -28,11 +29,13 @@ public class BookController : BaseApiController
     /// <param name="id"></param>
     /// <returns>Return the book</returns>
     [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BookDto>> GetBook(int id)
     {
         var book = await _bookRepository.GetByIdAsync(id);
         if (book is null)
-            return BadRequest("Book didn't find");
+            return NotFound(new ApiResponse(404));
 
         return _mapper.Map<BookDto>(book);
     }
@@ -42,11 +45,11 @@ public class BookController : BaseApiController
     /// </summary>
     /// <returns>List of the books</returns>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IReadOnlyList<BookDto>>> GetBooks()
     {
         var books = await _bookRepository.ListAllAsync();
-        if (!books.Any())
-            return BadRequest("Books don't exist");
 
         var data = _mapper.Map<IReadOnlyList<BookDto>>(books);
 

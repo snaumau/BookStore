@@ -1,5 +1,6 @@
 using API.Errors;
 using API.Helpers;
+using API.Middleware;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -59,6 +62,8 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occured during migration");
     }
 }
+
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
