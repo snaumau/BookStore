@@ -1,8 +1,8 @@
 namespace Core.Entities.Order;
 
-public abstract class BookItem
+public class BookItem
 {
-    protected BookItem(int bookItemId, string bookName)
+    public BookItem(int bookItemId, string bookName)
     {
         BookItemId = bookItemId;
         BookName = bookName;

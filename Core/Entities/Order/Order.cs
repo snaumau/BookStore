@@ -2,6 +2,10 @@ namespace Core.Entities.Order;
 
 public class Order : BaseEntity
 {
+    public Order()
+    {
+    }
+    
     public Order(IReadOnlyList<OrderItem>? orderItems, decimal subtotal)
     {
         OrderItems = orderItems;
