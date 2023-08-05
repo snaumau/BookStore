@@ -1,6 +1,6 @@
 using System.Reflection;
 using Core.Entities;
-using Core.Entities.Order;
+using Core.Entities.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
