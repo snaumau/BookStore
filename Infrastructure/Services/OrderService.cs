@@ -1,6 +1,7 @@
 using Core.Entities;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
+using Core.Specifications;
 
 namespace Infrastructure.Services;
 
@@ -9,32 +10,53 @@ namespace Infrastructure.Services;
 /// </summary>
 public class OrderService : IOrderService
 {
-    private readonly IGenericRepository<Order> _orderRepository;
-    private readonly IGenericRepository<Book> _bookRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
     /// Constructor
     /// </summary>
-    /// <param name="orderRepository"></param>
-    /// <param name="bookRepository"></param>
-    public OrderService(IGenericRepository<Order> orderRepository, IGenericRepository<Book> bookRepository)
+    /// <param name="unitOfWork"></param>
+    public OrderService(IUnitOfWork unitOfWork)
     {
-        _orderRepository = orderRepository;
-        _bookRepository = bookRepository;
+        _unitOfWork = unitOfWork;
     }
     
-    public Task<Order?> CreateOrderAsync(List<BookItem> orderItems)
+    public async Task<Order?> CreateOrderAsync(List<BookItem> orderItems)
     {
-        throw new NotImplementedException();
+        var items = new List<OrderItem>();
+        foreach (var item in orderItems)
+        {
+            var bookItem = await _unitOfWork.Repository<Book>().GetByIdAsync(item.BookId);
+            if (bookItem is null)
+                return null;
+            var itemOrdered = new BookItemOrdered(bookItem.Id, bookItem.Name);
+            var orderItem = new OrderItem(itemOrdered, bookItem.Price, item.Quantity);
+            items.Add(orderItem);
+        }
+        
+        var subtotal = items.Sum(item => item.Price * item.Quantity);
+        
+        var order = new Order(items, subtotal);
+        _unitOfWork.Repository<Order>().Add(order);
+        
+        var result = await _unitOfWork.Complete();
+        if (result <= 0)
+            return null;
+        
+        return order;
     }
 
-    public Task<Order?> GetOrderByIdAsync()
+    public async Task<Order?> GetOrderByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var specification = new OrdersWithItemsSpecification(id);
+
+        return await _unitOfWork.Repository<Order>().GetEntityWithSpec(specification);
     }
 
-    public Task<IReadOnlyList<Order>?> GetOrdersAsync()
+    public async Task<IReadOnlyList<Order>?> GetAllOrdersAsync(OrderSpecificationParams orderParams)
     {
-        throw new NotImplementedException();
+        var specification = new OrdersWithItemsSpecification(orderParams);
+        
+        return await _unitOfWork.Repository<Order>().ListAllAsync(specification);
     }
 }
