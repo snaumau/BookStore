@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<StoreContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
