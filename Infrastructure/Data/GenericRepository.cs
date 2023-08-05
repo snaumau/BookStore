@@ -43,6 +43,18 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
+    
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var entity = await _storeContext.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+        if (entity == null)
+            return false;
+        
+        _storeContext.Remove(entity);
+        await _storeContext.SaveChangesAsync();
+
+        return true;
+    }
 
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {

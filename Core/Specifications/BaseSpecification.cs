@@ -9,6 +9,13 @@ namespace Core.Specifications;
 public class BaseSpecification<T> : ISpecification<T>
 {
     /// <summary>
+    /// Default constructor
+    /// </summary>
+    protected BaseSpecification()
+    {
+    }
+    
+    /// <summary>
     /// Constructor with apply custom criteria
     /// </summary>
     /// <param name="criteria"></param>
@@ -16,7 +23,7 @@ public class BaseSpecification<T> : ISpecification<T>
     {
         Criteria = criteria;
     }
-    
+
     public Expression<Func<T, bool>>? Criteria { get; }
 
     public Expression<Func<T, object>>? OrderBy { get; private set; }

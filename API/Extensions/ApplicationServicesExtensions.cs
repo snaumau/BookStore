@@ -15,7 +15,7 @@ public static class ApplicationServicesExtensions
     {
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IBookService, BookService>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         
         services.Configure<ApiBehaviorOptions>(options =>

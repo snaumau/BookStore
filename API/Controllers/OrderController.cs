@@ -68,6 +68,8 @@ public class OrderController : BaseApiController
     /// <param name="bookItems"></param>
     /// <returns>Return created order</returns>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<OrderDto>> CreateOrder(List<BookItemDto> bookItems)
     {
         var items = _mapper.Map<List<BookItem>>(bookItems);
