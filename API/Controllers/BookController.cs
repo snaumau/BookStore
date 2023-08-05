@@ -3,10 +3,14 @@ using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+/// <summary>
+/// Book controller
+/// </summary>
 public class BookController : BaseApiController
 {
     private readonly IGenericRepository<Book> _bookRepository;
@@ -43,13 +47,14 @@ public class BookController : BaseApiController
     /// <summary>
     /// Get list of the books
     /// </summary>
-    /// <returns>List of the books</returns>
+    /// <returns>Return the list of the books</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IReadOnlyList<BookDto>>> GetBooks()
+    public async Task<ActionResult<IReadOnlyList<BookDto>>> GetBooks([FromQuery] BookSpecificationParams bookParams)
     {
-        var books = await _bookRepository.ListAllAsync();
+        var specification = new BooksSpecification(bookParams);
+        var books = await _bookRepository.ListAllAsync(specification);
 
         var data = _mapper.Map<IReadOnlyList<BookDto>>(books);
 
