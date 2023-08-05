@@ -39,6 +39,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _storeContext.Entry(entity).State = EntityState.Modified;
     }
 
+    public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
+    {
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
+    }
+
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
         var query = _storeContext.Set<T>().AsQueryable();

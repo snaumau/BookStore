@@ -25,6 +25,8 @@ public class BaseSpecification<T> : ISpecification<T>
     
     public Expression<Func<T, bool>>? FilteredByDate { get; private set; }
 
+    public List<Expression<Func<T, object>>> Includes { get; } = new();
+
     protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
     {
         OrderBy = orderByExpression;
@@ -38,5 +40,10 @@ public class BaseSpecification<T> : ISpecification<T>
     protected void AddFindByReleaseDate(Expression<Func<T, bool>> dateExpression)
     {
         FilteredByDate = dateExpression;
+    }
+    
+    protected void AddInclude(Expression<Func<T, object>> includeExpression)
+    {
+        Includes.Add(includeExpression);
     }
 }

@@ -16,4 +16,6 @@ public interface IGenericRepository<T> where T : BaseEntity
     void Add(T entity);
 
     void Update(T entity);
+    
+    Task<T?> GetEntityWithSpec(ISpecification<T> spec);
 }
