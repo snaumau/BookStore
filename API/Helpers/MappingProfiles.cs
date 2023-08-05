@@ -5,6 +5,9 @@ using Core.Entities.OrderAggregate;
 
 namespace API.Helpers;
 
+/// <summary>
+/// Mapping profiles for entities
+/// </summary>
 public class MappingProfiles : Profile
 {
     public MappingProfiles()
@@ -21,7 +24,6 @@ public class MappingProfiles : Profile
             .ForMember(d => d.BookName, opt => opt.MapFrom(s => s.ItemOrdered!.BookName))
             .ReverseMap();
         CreateMap<BookItem, BookItemDto>()
-            .ForMember(d => d.Id, opt => opt.MapFrom(s => s.BookId))
             .ReverseMap();
     }
 }

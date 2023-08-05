@@ -4,6 +4,9 @@ using Core.Interfaces;
 
 namespace Infrastructure.Data;
 
+/// <summary>
+/// Unit of work pattern for Generic repository 
+/// </summary>
 public class UnitOfWork : IUnitOfWork
 {
     private readonly StoreContext _storeContext;

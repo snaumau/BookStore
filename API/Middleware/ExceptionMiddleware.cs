@@ -4,12 +4,21 @@ using API.Errors;
 
 namespace API.Middleware;
 
+/// <summary>
+/// Exception middleware
+/// </summary>
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionMiddleware> _logger;
     private readonly IHostEnvironment _environment;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="next"></param>
+    /// <param name="logger"></param>
+    /// <param name="environment"></param>
     public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment environment)
     {
         _next = next;

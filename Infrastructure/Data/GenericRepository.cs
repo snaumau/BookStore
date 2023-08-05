@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Data;
 
 /// <summary>
-/// Repository for entities
+/// Generic repository for entities
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity

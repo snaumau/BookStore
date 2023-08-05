@@ -1,5 +1,8 @@
 namespace API.Errors;
 
+/// <summary>
+/// Class for validation error response
+/// </summary>
 public class ApiValidationErrorResponse : ApiResponse
 {
     public ApiValidationErrorResponse() : base(statusCode: 400)

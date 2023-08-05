@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Extensions;
 
+/// <summary>
+/// Add services to the middleware
+/// </summary>
 public static class ApplicationServicesExtensions
 {
     public static void AddApplicationServices(this IServiceCollection services)
