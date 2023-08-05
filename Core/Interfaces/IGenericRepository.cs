@@ -12,4 +12,8 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<T?> GetByIdAsync(int? id);
 
     Task<IReadOnlyList<T>> ListAllAsync(ISpecification<T> spec);
+
+    void Add(T entity);
+    
+    Task<T?> GetEntityWithSpec(ISpecification<T> spec);
 }

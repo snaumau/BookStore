@@ -48,7 +48,7 @@ public class BookController : BaseApiController
     /// Get list of the books
     /// </summary>
     /// <returns>Return the list of the books</returns>
-    [HttpGet]
+    [HttpGet("getFilteredBooks")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IReadOnlyList<BookDto>>> GetBooks([FromQuery] BookSpecificationParams bookParams)

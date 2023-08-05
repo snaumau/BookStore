@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
+/// <summary>
+/// Book repository
+/// </summary>
 public class BookRepository : IBookRepository
 {
     private readonly StoreContext _storeContext;

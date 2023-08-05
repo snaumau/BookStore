@@ -1,7 +1,15 @@
 namespace API.Errors;
 
+/// <summary>
+/// Class for management api responses
+/// </summary>
 public class ApiResponse
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="statusCode"></param>
+    /// <param name="message"></param>
     public ApiResponse(int statusCode, string? message = null)
     {
         StatusCode = statusCode;
@@ -12,6 +20,11 @@ public class ApiResponse
 
     public string Message { get; set; }
 
+    /// <summary>
+    /// Get default message by status code
+    /// </summary>
+    /// <param name="statusCode"></param>
+    /// <returns>Return default message</returns>
     private static string GetDefaultMessageForStatusCode(int statusCode) => statusCode switch
     {
         400 => "A bad request, you have made",

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20230805114452_OrderEntityAdded")]
+    partial class OrderEntityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -39,7 +42,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Core.Entities.OrderAggregate.Order", b =>
+            modelBuilder.Entity("Core.Entities.Order.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +59,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Core.Entities.OrderAggregate.OrderItem", b =>
+            modelBuilder.Entity("Core.Entities.Order.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,14 +81,14 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("Core.Entities.OrderAggregate.OrderItem", b =>
+            modelBuilder.Entity("Core.Entities.Order.OrderItem", b =>
                 {
-                    b.HasOne("Core.Entities.OrderAggregate.Order", null)
+                    b.HasOne("Core.Entities.Order.Order", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("Core.Entities.OrderAggregate.BookItemOrdered", "ItemOrdered", b1 =>
+                    b.OwnsOne("Core.Entities.Order.BookItem", "BookItem", b1 =>
                         {
                             b1.Property<int>("OrderItemId")
                                 .HasColumnType("INTEGER");
@@ -105,10 +108,10 @@ namespace Infrastructure.Data.Migrations
                                 .HasForeignKey("OrderItemId");
                         });
 
-                    b.Navigation("ItemOrdered");
+                    b.Navigation("BookItem");
                 });
 
-            modelBuilder.Entity("Core.Entities.OrderAggregate.Order", b =>
+            modelBuilder.Entity("Core.Entities.Order.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });

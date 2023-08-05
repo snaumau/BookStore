@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Data;
 
 /// <summary>
-/// Repository for entities
+/// Generic repository for entities
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
@@ -27,7 +27,23 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         return await ApplySpecification(spec).ToListAsync();
     }
-    
+
+    public void Add(T entity)
+    {
+        _storeContext.Set<T>().Add(entity);
+    }
+
+    public void Update(T entity)
+    {
+        _storeContext.Set<T>().Attach(entity);
+        _storeContext.Entry(entity).State = EntityState.Modified;
+    }
+
+    public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
+    {
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
+    }
+
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
         var query = _storeContext.Set<T>().AsQueryable();

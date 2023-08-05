@@ -15,4 +15,6 @@ public interface ISpecification<T>
     Expression<Func<T, object>>? OrderByDescending { get; }
     
     Expression<Func<T, bool>>? FilteredByDate { get; }
+    
+    List<Expression<Func<T, object>>>? Includes { get; }
 }

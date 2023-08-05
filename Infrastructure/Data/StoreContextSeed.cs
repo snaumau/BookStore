@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Data;
 
+/// <summary>
+/// Fill data from json if the database doesn't exist
+/// </summary>
 public class StoreContextSeed
 {
     public static async Task SeedAsync(StoreContext storeContext, ILoggerFactory loggerFactory)

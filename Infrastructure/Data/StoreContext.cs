@@ -1,9 +1,13 @@
 using System.Reflection;
 using Core.Entities;
+using Core.Entities.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
+/// <summary>
+/// Application context
+/// </summary>
 public class StoreContext : DbContext
 {
     public StoreContext(DbContextOptions<StoreContext> options) : base(options)
@@ -11,6 +15,10 @@ public class StoreContext : DbContext
     }
 
     public DbSet<Book>? Books { get; set; }
+    
+    public DbSet<Order>? Orders { get; set; }
+    
+    public DbSet<OrderItem>? OrderItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

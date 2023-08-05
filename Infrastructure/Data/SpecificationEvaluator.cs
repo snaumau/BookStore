@@ -1,5 +1,6 @@
 using Core.Entities;
 using Core.Specifications;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
@@ -22,6 +23,8 @@ public abstract class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
         
         if (spec.FilteredByDate != null)
             query = query.Where(spec.FilteredByDate);
+
+        query = spec.Includes!.Aggregate(query, (current, include) => current.Include(include));
 
         return query;
     }
