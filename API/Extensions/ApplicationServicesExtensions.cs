@@ -11,6 +11,7 @@ public static class ApplicationServicesExtensions
     public static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         
