@@ -54,13 +54,6 @@ public class BookController : BaseApiController
     public async Task<ActionResult<IReadOnlyList<BookDto>>> GetBooks([FromQuery] BookSpecificationParams bookParams)
     {
         var books = await _bookService.GetBooksAsync(bookParams);
-        
-        // SqLite doesn't support ToLower() in the query
-        // If use another database provider - disable this
-        if (!string.IsNullOrWhiteSpace(bookParams.Search))
-            books = books?.Where(x => x.Name.ToLower().Contains(bookParams.Search))
-                .ToList();
-        
         var data = _mapper.Map<IReadOnlyList<BookDto>>(books);
 
         return Ok(data);
