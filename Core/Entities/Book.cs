@@ -6,5 +6,5 @@ public class Book : BaseEntity
 
     public decimal Price { get; set; }
 
-    public DateOnly ReleaseDate { get; set; }
+    public DateTime ReleaseDate { get; set; }
 }
